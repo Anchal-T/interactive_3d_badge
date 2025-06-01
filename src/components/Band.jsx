@@ -36,6 +36,7 @@ export function Band({ cardRef }) {
 
     return (
         <>
+          <group position={[0, 4, 0]}>
             <RigidBody ref={fixed} type="fixed" />
 
             <RigidBody position={[0.5, 0, 0]} ref={j1}>
@@ -49,10 +50,11 @@ export function Band({ cardRef }) {
             <RigidBody position={[1.5, 0, 0]} ref={j3}>
                 <BallCollider args={[0.1]} />
             </RigidBody >
+          </group>
             
             <mesh ref={band}>
                 <meshLineGeometry />
-                <meshLineMaterial color="white" resolution={[width, height]} lineWidth={1} />
+                <meshLineMaterial color="white" resolution={[width, height]} lineWidth={0.25} />
             </mesh>
         </>
     )
