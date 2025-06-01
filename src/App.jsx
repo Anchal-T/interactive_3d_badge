@@ -13,8 +13,7 @@ function App(){
             <ambientLight intensity={1} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <Physics gravity={[0, -9.81, 0]}>
-                {/* Position the card directly below the band */}
-                <Model ref={cardModelRef} position={[0, -1, 0]}/> 
+                <Model ref={cardModelRef} position={[0, 0, 0]}/> 
                 <Band cardRef={cardModelRef} />
             </Physics>
             <OrbitControls />

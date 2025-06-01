@@ -14,7 +14,12 @@ export function Band({ cardRef }) {
     const j3 = useRef()
 
     const { width, height } = useThree((state) => state.size)
-    const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]))
+    const [curve] = useState(() => 
+            new THREE.CatmullRomCurve3([new THREE.Vector3(), 
+            new THREE.Vector3(), 
+            new THREE.Vector3(), 
+            new THREE.Vector3()
+        ]))
 
     useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]) 
     useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]) 
@@ -32,15 +37,19 @@ export function Band({ cardRef }) {
     return (
         <>
             <RigidBody ref={fixed} type="fixed" />
+
             <RigidBody position={[0.5, 0, 0]} ref={j1}>
                 <BallCollider args={[0.1]} />
             </RigidBody>
+            
             <RigidBody position={[1, 0, 0]} ref={j2}>
                 <BallCollider args={[0.1]} />
             </RigidBody >
+            
             <RigidBody position={[1.5, 0, 0]} ref={j3}>
                 <BallCollider args={[0.1]} />
             </RigidBody >
+            
             <mesh ref={band}>
                 <meshLineGeometry />
                 <meshLineMaterial color="white" resolution={[width, height]} lineWidth={1} />
