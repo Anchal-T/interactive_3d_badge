@@ -29,7 +29,7 @@ export function Model(props) {
                 rotation={[-0.177, -1.143, -0.162]}
                 scale={0.188}
             >
-                <meshStandardMaterial color="grey" metalness={0.9} roughness={0.1} />
+                <meshStandardMaterial color="silver" metalness={0.9} roughness={0.1} />
             </mesh>
             <mesh
                 castShadow
@@ -39,7 +39,7 @@ export function Model(props) {
                 position={[-0.26, 0.717, 0.638]}
                 scale={0.145}
             >
-                <meshStandardMaterial color="grey" metalness={0.9} roughness={0.1} />
+                <meshStandardMaterial color="silver" metalness={0.9} roughness={0.1} />
             </mesh>
         </group>
     )
