@@ -6,7 +6,7 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline'
 
 extend({ MeshLineGeometry, MeshLineMaterial })
 
-export function Band() {
+export function Band({ cardRef }) {
     const band = useRef()
     const fixed = useRef()
     const j1 = useRef()
@@ -14,14 +14,13 @@ export function Band() {
     const j3 = useRef()
 
     const { width, height } = useThree((state) => state.size)
-    const [curve] = useState(() => new THREE.CatmullRomCurve3([
-        new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()
-    ]))
+    const [curve] = useState(() => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]))
 
-    useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1])
-    useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1])
+    useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]) 
+    useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]) 
     useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1])
-
+    useSphericalJoint(j3, cardRef, [[0, 0, 0], [0, 1.45, 0]])
+    
     useFrame(() => {
         curve.points[0].copy(j3.current.translation())
         curve.points[1].copy(j2.current.translation())
