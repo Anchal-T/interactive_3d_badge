@@ -10,39 +10,34 @@ export const Model = ({ ref, ...props }) => {
     const { nodes, materials } = useGLTF('/model/keyCard.glb')
     return (
         <RigidBody ref={ref} {...props} colliders="cuboid">
-            <group dispose={null} >
+            <group {...props} dispose={null}>
                 <mesh
                     castShadow
                     receiveShadow
                     geometry={nodes.Plane.geometry}
-                    // material={nodes.Plane.material}
-                    position={[-0.264, 0.64, 0.631]}
-                    rotation={[0.117, 0.493, 1.491]}
-                    scale={0.052}
-                >
-                    <meshStandardMaterial color='white' />
-                </mesh>
+                    material={nodes.Plane.material}
+                    position={[-0.002, 0.674, -0.03]}
+                    rotation={[-0.158, 1.538, 1.684]}
+                    scale={0.357}
+                />
                 <mesh
                     castShadow
                     receiveShadow
                     geometry={nodes.clamp.geometry}
-                    // material={materials.metal}
-                    position={[-0.261, 0.697, 0.637]}
-                    rotation={[-0.177, -1.143, -0.162]}
-                    scale={0.188}
-                >
-                    <meshStandardMaterial color="silver" metalness={0.9} roughness={0.1} />
-                </mesh>
+                    material={materials.metal}
+                    position={[0.001, 1.067, -0.038]}
+                    rotation={[-0.086, -0.113, 0.1]}
+                    scale={1.285}
+                />
                 <mesh
                     castShadow
                     receiveShadow
                     geometry={nodes.clip.geometry}
                     material={materials.metal}
-                    position={[-0.26, 0.717, 0.638]}
-                    scale={0.145}
-                >
-                    <meshStandardMaterial color="silver" metalness={0.9} roughness={0.1} />
-                </mesh>
+                    position={[-0.01, 1.203, -0.049]}
+                    rotation={[-0.206, 1.033, 0.211]}
+                    scale={0.991}
+                />
             </group>
         </RigidBody>
     )
