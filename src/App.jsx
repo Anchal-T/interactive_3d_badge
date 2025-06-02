@@ -9,7 +9,7 @@ function App(){
     const cardModelRef = useRef();
 
     return(
-        <Canvas camera={{position: [0, 0, 14], fov : 25}}>
+        <Canvas camera={{position: [0, 0, 12], fov : 15}}>
             <ambientLight intensity={1} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <Physics interpolate gravity={[0, -39.81, 0]} timeStep={1 / 60}>
