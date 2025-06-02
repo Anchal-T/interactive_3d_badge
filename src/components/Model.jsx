@@ -34,8 +34,12 @@ export const Model = ({ ref, ...props }) => {
     useFrame((state) => {
         if(dragged && ref.current){
             vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(camera)
+            
             dir.copy(vec).sub(camera.position).normalize()
+            
             vec.add(dir.multiplyScalar(camera.position.length()))
+            
+            ref.current.wakeUp()
 
             ref.current.setNextKinematicTranslation({
                 x: vec.x - draggedOffsetRef.current.x,
@@ -50,8 +54,9 @@ export const Model = ({ ref, ...props }) => {
             ref={ref} 
             {...props}
             type={dragged ? 'kinematicPosition': 'dynamic'}>
-            angularDamping={4}
-            linearDamping={4}
+            angularDamping={2}
+            linearDamping={2}
+            canSleep={true}
             <CuboidCollider args={[0.8, 1.125, 0.01]} />
             
             <group 
