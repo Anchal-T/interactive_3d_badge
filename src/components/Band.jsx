@@ -18,6 +18,9 @@ export function Band({ cardRef }) {
     const ang = new THREE.Vector3()
     // const dir = new THREE.Vector3()
 
+    const [lerpedJ1] = useState(() => new THREE.Vector3())
+    const [lerpedJ2] = useState(() => new THREE.Vector3())
+
     const segmentProps = {
         type : 'dynamic',
         canSleep : true,
@@ -28,6 +31,7 @@ export function Band({ cardRef }) {
 
 
     const { width, height } = useThree((state) => state.size)
+
     const [curve] = useState(() => 
             new THREE.CatmullRomCurve3([new THREE.Vector3(), 
             new THREE.Vector3(), 
@@ -40,23 +44,30 @@ export function Band({ cardRef }) {
     useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1])
     useSphericalJoint(j3, cardRef, [[0, 0, 0], [0, 1.45, 0]])
     
-    useFrame((state) => {
+    useFrame((state, delta) => {
         // if(dragged){
         //     vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera)
         //     dir.copy(vec).sub(state.camera.position).normalize()
         //     vec.add(dir.multiplyScalar(state.camera.position.length()))
         //     cardRef.current.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z })
         // }
+        if(cardRef.current && fixed.current && j3.current && band.current){
 
-        curve.points[0].copy(j3.current.translation())
-        curve.points[1].copy(j2.current.translation())
-        curve.points[2].copy(j1.current.translation())
-        curve.points[3].copy(fixed.current.translation())
-        band.current.geometry.setPoints(curve.getPoints(32))
-        
-        ang.copy(cardRef.current.angvel())
-        rot.copy(cardRef.current.rotation())
-        cardRef.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z })
+            const lerpFactor = 1 - Math.pow(0.3, delta)
+            
+            lerpedJ1.lerp(j1.current.translation(), lerpFactor)
+            lerpedJ2.lerp(j2.current.translation(), lerpFactor)
+
+            curve.points[0].copy(j3.current.translation())
+            curve.points[1].copy(lerpedJ2)
+            curve.points[2].copy(lerpedJ1)
+            curve.points[3].copy(fixed.current.translation())
+            band.current.geometry.setPoints(curve.getPoints(32))
+            
+            ang.copy(cardRef.current.angvel())
+            rot.copy(cardRef.current.rotation())
+            cardRef.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z })
+        }
     })
 
     return (

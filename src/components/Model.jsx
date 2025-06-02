@@ -50,7 +50,10 @@ export const Model = ({ ref, ...props }) => {
             ref={ref} 
             {...props}
             type={dragged ? 'kinematicPosition': 'dynamic'}>
+            angularDamping={4}
+            linearDamping={4}
             <CuboidCollider args={[0.8, 1.125, 0.01]} />
+            
             <group 
                 {...props} 
                 dispose={null}
