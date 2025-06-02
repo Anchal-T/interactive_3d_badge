@@ -26,7 +26,7 @@ export function Band({ cardRef }) {
         canSleep: true,
         colliders: false,
         angularDamping: 2,
-        linearDamping: 2
+        linearDamping: 2,
     }
 
 
@@ -42,7 +42,7 @@ export function Band({ cardRef }) {
     useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1])
     useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1])
     useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1])
-    useSphericalJoint(j3, cardRef, [[0, 0, 0], [0, 1.45, 0]])
+    useSphericalJoint(j3, cardRef, [[0, 0, 0], [0, 1.39, 0]])
 
     useFrame((state, delta) => {
 

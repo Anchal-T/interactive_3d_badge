@@ -60,13 +60,13 @@ export const Model = ({ ref, ...props }) => {
         <RigidBody
             ref={ref}
             {...props}
-            type={dragged ? 'kinematicPosition' : 'dynamic'}>
+            type={dragged ? 'kinematicPosition' : 'dynamic'}
             angularDamping={2}
             linearDamping={2}
             canSleep={true}
             colliders={false}
+        >
             <CuboidCollider args={[0.8, 1.025, 0.01]} />
-
             <group
                 {...props}
                 dispose={null}

@@ -15,10 +15,10 @@ function App(){
             <ambientLight intensity={Math.PI} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <Physics debug={debug} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
-                <Model ref={cardModelRef} position={[0, 0, 0]}/> 
                 <Band cardRef={cardModelRef} />
+                <Model ref={cardModelRef} position={[0, 0.1, 0]}/> 
             </Physics>
-            <OrbitControls />
+            {/* <OrbitControls /> */}
         </Canvas>
     )
 }
