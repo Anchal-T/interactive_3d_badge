@@ -44,50 +44,46 @@ const HolographicShaderMaterial = shaderMaterial(
       // Base card texture with rotated UVs
       vec4 color = texture2D(cardTexture, cardUV);
       
-      // Get normal map data
-      vec3 normal = texture2D(normalTexture, vUv).rgb * 2.0 - 1.0;
-      
-      // Noise texture for varied reflections
-      vec3 noise = texture2D(noiseTexture, vUv * 0.5 + time * 0.01).rgb;
-      
-      // Calculate holographic effect coordinates
-      vec2 holoUV = vUv;
-      
       // Dynamic holographic effect based on pointer position
       float pX = (pointerX - 0.5) * 2.0;
       float pY = (pointerY - 0.5) * 2.0;
       
-      // Distort UVs based on pointer position and normal map
-      holoUV.x += pX * 0.1 * normal.x;
-      holoUV.y += pY * 0.1 * normal.y;
+      // Calculate holographic effect coordinates with subtle distortion
+      vec2 holoUV = vUv;
+      holoUV.x += pX * 0.02; // Reduced distortion
+      holoUV.y += pY * 0.02;
       
-      // Additional distortion for more dynamic effect
-      holoUV += noise.xy * 0.05;
+      // Apply time-based movement for shimmer effect
+      holoUV.x += sin(time * 0.3 + vUv.y * 8.0) * 0.005;
+      holoUV.y += cos(time * 0.4 + vUv.x * 6.0) * 0.005;
       
-      // Apply time-based movement
-      holoUV.x += sin(time * 0.2 + vUv.y * 10.0) * 0.01;
-      holoUV.y += cos(time * 0.3 + vUv.x * 8.0) * 0.01;
-      
-      // Holo texture with distortion
+      // Holo texture - this goes behind the card
       vec4 holo = texture2D(holoTexture, holoUV);
       
-      // Create glare effect based on pointer position
-      float glareAngle = atan(pY, pX);
-      float glareDist = smoothstep(0.0, 1.0, 1.0 - distance(vec2(pointerX, pointerY), vUv) * 2.0);
-      float glare = sin(glareAngle * 5.0 + time) * 0.5 + 0.5;
-      glare *= glareDist * pointerFromCenter;
+      // Create subtle glare effect based on pointer position
+      float glareDist = 1.0 - distance(vec2(pointerX, pointerY), vUv);
+      float glare = smoothstep(0.3, 0.8, glareDist) * pointerFromCenter;
+      glare *= 0.15; // Much more subtle
       
-      // Grain effect
-      vec3 grain = texture2D(grainTexture, vUv * 2.0 + time * 0.05).rgb;
+      // Grain effect for texture
+      vec3 grain = texture2D(grainTexture, vUv * 3.0).rgb;
       
-      // Blend the holographic effect with the base texture
-      vec3 finalColor = mix(color.rgb, holo.rgb * cardGlow, holo.a * 0.8 * (noise.r * 0.5 + 0.5));
+      // Start with the holographic background
+      vec3 finalColor = holo.rgb * cardGlow * 0.3; // Subtle background effect
       
-      // Add glare and grain effects
-      finalColor += cardGlow * glare * 0.3;
-      finalColor *= mix(vec3(1.0), grain, 0.1);
+      // Layer the card image on top with proper alpha blending
+      finalColor = mix(finalColor, color.rgb, color.a);
       
-      gl_FragColor = vec4(finalColor, color.a);
+      // Add very subtle glare highlights
+      finalColor += cardGlow * glare;
+      
+      // Apply subtle grain texture
+      finalColor *= mix(vec3(1.0), grain, 0.05);
+      
+      // Brighten the overall result
+      finalColor *= 1.2;
+      
+      gl_FragColor = vec4(finalColor, 1.0);
     }
   `
 )
