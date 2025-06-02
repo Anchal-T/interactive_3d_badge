@@ -103,4 +103,4 @@ export function Band({ cardRef }) {
             </mesh>
         </>
     )
-}
+}   
