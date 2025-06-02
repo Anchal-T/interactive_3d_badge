@@ -13,12 +13,18 @@ export function Band({ cardRef }) {
     const j2 = useRef()
     const j3 = useRef()
 
-    const vec = new THREE.Vector3()
+    // const vec = new THREE.Vector3()
     const rot = new THREE.Vector3()
     const ang = new THREE.Vector3()
-    const dir = new THREE.Vector3()
+    // const dir = new THREE.Vector3()
 
-    const [dragged, drag] = useState(false)
+    const segmentProps = {
+        type : 'dynamic',
+        canSleep : true,
+        colliders : false,
+        angularDamping : 2,
+        linearDamping : 2
+    }
 
 
     const { width, height } = useThree((state) => state.size)
@@ -35,12 +41,12 @@ export function Band({ cardRef }) {
     useSphericalJoint(j3, cardRef, [[0, 0, 0], [0, 1.45, 0]])
     
     useFrame((state) => {
-        if(dragged){
-            vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera)
-            dir.copy(vec).sub(state.camera.position).normalize()
-            vec.add(dir.multiplyScalar(state.camera.position.length()))
-            cardRef.current.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z })
-        }
+        // if(dragged){
+        //     vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera)
+        //     dir.copy(vec).sub(state.camera.position).normalize()
+        //     vec.add(dir.multiplyScalar(state.camera.position.length()))
+        //     cardRef.current.setNextKinematicTranslation({ x: vec.x - dragged.x, y: vec.y - dragged.y, z: vec.z - dragged.z })
+        // }
 
         curve.points[0].copy(j3.current.translation())
         curve.points[1].copy(j2.current.translation())
