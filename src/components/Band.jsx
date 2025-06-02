@@ -64,15 +64,15 @@ export function Band({ cardRef }) {
           <group position={[0, 4, 0]}>
             <RigidBody ref={fixed} type="fixed" />
 
-            <RigidBody position={[0.5, 0, 0]} ref={j1}>
+            <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
                 <BallCollider args={[0.1]} />
             </RigidBody>
             
-            <RigidBody position={[1, 0, 0]} ref={j2}>
+            <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}>
                 <BallCollider args={[0.1]} />
             </RigidBody >
             
-            <RigidBody position={[1.5, 0, 0]} ref={j3}>
+            <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
                 <BallCollider args={[0.1]} />
             </RigidBody >
           </group>
