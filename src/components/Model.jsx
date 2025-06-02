@@ -65,7 +65,7 @@ export const Model = ({ ref, ...props }) => {
             linearDamping={2}
             canSleep={true}
             colliders={false}
-            <CuboidCollider args={[0.8, 1.125, 0.01]} />
+            <CuboidCollider args={[0.8, 1.025, 0.01]} />
 
             <group
                 {...props}
