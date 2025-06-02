@@ -11,18 +11,17 @@ import { HolographicMaterial } from './HolographicMaterial'
 export const Model = ({ ref, cardType = 'water', ...props }) => {
     const { nodes, materials } = useGLTF('/model/keyCard.glb')
     const [dragged, setDragged] = useState(false)
-    const draggedOffsetRef = useRef(new THREE.Vector3())
-      // Pokemon card texture mappings
+    const draggedOffsetRef = useRef(new THREE.Vector3())    // Pokemon card texture mappings
     const cardTextureMappings = useMemo(() => ({
         // Base repository URL for textures (raw GitHub content)
-        baseUrl: 'https://raw.githubusercontent.com/simeydotme/pokemon-cards-css/refs/heads/main/public/img/',
+        baseUrl: 'https://raw.githubusercontent.com/simeydotme/pokemon-cards-css/main/public/img',
         
         // Using actual background images from the Pokemon Cards CSS repo
         cardBases: {
             water: '/cosmos.png',      // Cosmos holographic background
-            // fire: '/galaxy.png',       // Galaxy holographic background  
+            // fire: '/galaxy.jpg',       // Galaxy holographic background  
             // grass: '/trainerbg.png',   // Trainer background pattern
-            // lightning: '/cosmos.png',  // Cosmos background
+            // lightning: '/cosmos.jpg',  // Cosmos background
             // psychic: '/galaxy.jpg',    // Galaxy background
             // fighting: '/trainerbg.png', // Trainer background
             // darkness: '/galaxy.jpg',   // Galaxy background (darker theme)
@@ -31,22 +30,13 @@ export const Model = ({ ref, cardType = 'water', ...props }) => {
             // dragon: '/cosmos.jpg'      // Cosmos background
         },
         
-        // Holographic patterns - using actual files from repo
-        holoPatterns: {
-            cosmos: '/cosmos.jpg',
-            // galaxy: '/galaxy.jpg',
-            // legendary: '/galaxy.jpg',
-            // radiant: '/cosmos.jpg',
-            // rainbow: '/cosmos.jpg',
-            // sparkles: '/glitter.png',
-            // trainer: '/trainerbg.png',
-        },
-        
-        // Common textures - using actual files from repo
-        common: {
-            grain: '/grain.webp',
-            noise: '/glitter.png',
-            normal: '/grain.webp',
+        // Additional textures for effects
+        effects: {
+            grain: '/grain.webp',      // Grain texture for subtle noise
+            glitter: '/glitter.png',   // Glitter texture for sparkle effects
+            cosmos: '/cosmos.png',     // Cosmos pattern
+            galaxy: '/galaxy.jpg',     // Galaxy pattern
+            trainerbg: '/trainerbg.png' // Trainer background
         }
     }), []);    // Generate texture URLs for holographic background and Pokemon card
     const textureUrls = useMemo(() => {
@@ -55,7 +45,10 @@ export const Model = ({ ref, cardType = 'water', ...props }) => {
         
         return {
             holographic: `${baseUrl}${cardBase}`,
-            pokemonCard: '/textures/pikachu.png' // Local Pokemon card texture
+            pokemonCard: '/textures/pikachu.png', // Local Pokemon card texture
+            grain: `${baseUrl}${cardTextureMappings.effects.grain}`,
+            glitter: `${baseUrl}${cardTextureMappings.effects.glitter}`,
+            cosmos: `${baseUrl}${cardTextureMappings.effects.cosmos}`
         };
     }, [cardType, cardTextureMappings]);
     
@@ -128,12 +121,12 @@ export const Model = ({ ref, cardType = 'water', ...props }) => {
                     position={[-0.002, 0.674, -0.03]}
                     rotation={[-0.158, 1.538, 1.684]}
                     scale={0.357}
-                ><HolographicMaterial 
+                >                    <HolographicMaterial 
                         cardTexture={textures.pokemonCard}
                         holoTexture={textures.holographic}
-                        grainTexture={textures.holographic}
-                        noiseTexture={textures.holographic}
-                        normalTexture={textures.holographic}
+                        grainTexture={textures.grain}
+                        noiseTexture={textures.glitter}
+                        normalTexture={textures.cosmos}
                         type={cardType}
                     />
                 </mesh>
