@@ -18,8 +18,8 @@ export function Band({ cardRef }) {
     const ang = new THREE.Vector3()
     // const dir = new THREE.Vector3()
 
-    const [lerpedJ1] = useState(() => new THREE.Vector3())
-    const [lerpedJ2] = useState(() => new THREE.Vector3())
+    // const [lerpedJ1] = useState(() => new THREE.Vector3())
+    // const [lerpedJ2] = useState(() => new THREE.Vector3())
 
     const segmentProps = {
         type : 'dynamic',
@@ -53,14 +53,26 @@ export function Band({ cardRef }) {
         // }
         if(cardRef.current && fixed.current && j3.current && band.current){
 
-            const lerpFactor = 1 - Math.pow(0.3, delta)
+            // const lerpFactor = 1 - Math.pow(0.3, delta)
+
+            ;[j1, j2].forEach((ref) => {
+                if(!ref.current.lerped){
+                    ref.current.lerped = new THREE.Vector3().copy(ref.current.translation())
+                }
+
+                const clampedDistance = Math.max(0.1, Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())))
+
+                const adaptiveSpeed = 10 + clampedDistance * (50 - 10)
+                
+                ref.current.lerped.lerp(ref.current.translation(), delta * adaptiveSpeed)
+            })
             
-            lerpedJ1.lerp(j1.current.translation(), lerpFactor)
-            lerpedJ2.lerp(j2.current.translation(), lerpFactor)
+            // lerpedJ1.lerp(j1.current.translation(), lerpFactor)
+            // lerpedJ2.lerp(j2.current.translation(), lerpFactor)
 
             curve.points[0].copy(j3.current.translation())
-            curve.points[1].copy(lerpedJ2)
-            curve.points[2].copy(lerpedJ1)
+            curve.points[1].copy(j2.current.lerped)
+            curve.points[2].copy(j1.current.lerped)
             curve.points[3].copy(fixed.current.translation())
             band.current.geometry.setPoints(curve.getPoints(32))
             
@@ -69,6 +81,8 @@ export function Band({ cardRef }) {
             cardRef.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z })
         }
     })
+
+    curve.curveType = 'chordal'
 
     return (
         <>
