@@ -13,7 +13,7 @@ function App(){
             <ambientLight intensity={1} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <Physics interpolate gravity={[0, -39.81, 0]} timeStep={1 / 60}>
-                <Model ref={cardModelRef} position={[0, 0.2, 0]}/> 
+                <Model ref={cardModelRef} position={[0, 0, 0]}/> 
                 <Band cardRef={cardModelRef} />
             </Physics>
             {/* <OrbitControls /> */}

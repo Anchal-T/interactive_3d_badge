@@ -42,7 +42,7 @@ export function Band({ cardRef }) {
     useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1])
     useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1])
     useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1])
-    useSphericalJoint(j3, cardRef, [[0, 0, 0], [0, 1.45, 0]])
+    useSphericalJoint(j3, cardRef, [[0, 0, 0], [0, 1.30, 0]])
 
     useFrame((state, delta) => {
 
@@ -99,7 +99,7 @@ export function Band({ cardRef }) {
 
             <mesh ref={band}>
                 <meshLineGeometry />
-                <meshLineMaterial color="white" resolution={[width, height]} lineWidth={0.25} />
+                <meshLineMaterial color="white" resolution={[width, height]} lineWidth={0.35} />
             </mesh>
         </>
     )
