@@ -15,12 +15,15 @@ export const Model = ({ ref, ...props }) => {
 
     const vec = useRef(new THREE.Vector3()).current
     const dir = useRef(new THREE.Vector3()).current
+    const rot = new THREE.Vector3()
+    const ang = new THREE.Vector3()
+    
 
-    const {camera} = useThree()
+    const { camera } = useThree()
 
     const handlePointerDown = (event) => {
         event.stopPropagation()
-        if(ref.current){
+        if (ref.current) {
             draggedOffsetRef.current.copy(event.point).sub(ref.current.translation())
             setDragged(true)
 
@@ -32,36 +35,40 @@ export const Model = ({ ref, ...props }) => {
     };
 
     useFrame((state) => {
-        if(dragged && ref.current){
+        if (dragged && ref.current) {
             vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(camera)
-            
             dir.copy(vec).sub(camera.position).normalize()
-            
             vec.add(dir.multiplyScalar(camera.position.length()))
-            
-            ref.current.wakeUp()
 
+            ref.current.wakeUp()
             ref.current.setNextKinematicTranslation({
                 x: vec.x - draggedOffsetRef.current.x,
                 y: vec.y - draggedOffsetRef.current.y,
-                z: vec.z - draggedOffsetRef.current.z, 
+                z: vec.z - draggedOffsetRef.current.z,
             });
+        }
+
+        // Add this rotation control part:
+        if (ref.current) {
+            ang.copy(ref.current.angvel())
+            rot.copy(ref.current.rotation())
+            ref.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z })
         }
     })
 
     return (
-        <RigidBody 
-            ref={ref} 
+        <RigidBody
+            ref={ref}
             {...props}
-            type={dragged ? 'kinematicPosition': 'dynamic'}>
+            type={dragged ? 'kinematicPosition' : 'dynamic'}>
             angularDamping={2}
             linearDamping={2}
             canSleep={true}
             colliders={false}
             <CuboidCollider args={[0.8, 1.125, 0.01]} />
-            
-            <group 
-                {...props} 
+
+            <group
+                {...props}
                 dispose={null}
                 onPointerUp={handlePointerUp}
                 onPointerDown={handlePointerDown}

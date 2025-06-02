@@ -47,10 +47,10 @@ export function Band({ cardRef }) {
     useFrame((state, delta) => {
 
         if (cardRef.current && fixed.current && j3.current && band.current) {
+            // ;[j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp())
 
-            // const lerpFactor = 1 - Math.pow(0.3, delta)
 
-            ;[j1, j2, j3].forEach((ref) => {
+            ;[j1, j2].forEach((ref) => {
                 if (!ref.current.lerped) {
                     ref.current.lerped = new THREE.Vector3().copy(ref.current.translation())
                 }
@@ -71,9 +71,9 @@ export function Band({ cardRef }) {
             curve.points[3].copy(fixed.current.translation())
             band.current.geometry.setPoints(curve.getPoints(32))
 
-            ang.copy(cardRef.current.angvel())
-            rot.copy(cardRef.current.rotation())
-            cardRef.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z })
+            // ang.copy(cardRef.current.angvel())
+            // rot.copy(cardRef.current.rotation())
+            // cardRef.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z })
         }
     })
 
@@ -99,7 +99,7 @@ export function Band({ cardRef }) {
 
             <mesh ref={band}>
                 <meshLineGeometry />
-                <meshLineMaterial color="white" resolution={[width, height]} lineWidth={0.35} />
+                <meshLineMaterial color={'#222222'} resolution={[width, height]} lineWidth={0.35} />
             </mesh>
         </>
     )
