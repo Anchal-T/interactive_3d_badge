@@ -148,9 +148,9 @@ export function Band({ maxSpeed = 50, minSpeed = 10 }) {
               )
             )}
           >
-            {" "}
             <mesh
               geometry={nodes.Plane.geometry}
+              material={materials.Material}
               position={[-0.002, 0.674, -0.011]}
               rotation={[-2.405, 1.566, -2.309]}
               scale={0.357}
@@ -167,18 +167,16 @@ export function Band({ maxSpeed = 50, minSpeed = 10 }) {
               />
             </mesh>
             <mesh
-              geometry={nodes.clamp.geometry}
-              material={materials.metal}
-              position={[0.001, 1.067, -0.038]}
-            //   rotation={[-0.086, -0.113, 0.1]}
-              scale={1.285}
+              geometry={nodes.clamp001.geometry}
+              material={materials['metal.001']}
+              position={[0, 0, -0.008]}
+              rotation={[0, -0.324, 0]}
             />
             <mesh
-              geometry={nodes.clip.geometry}
-              material={materials.metal}
-              position={[-0.01, 1.203, -0.049]}
-            //   rotation={[-0.206, 1.033, 0.211]}
-              scale={0.991}
+              geometry={nodes.clip001.geometry}
+              material={materials['metal.001']}
+              position={[0, 0, -0.008]}
+              rotation={[0, -0.377, 0]}
             />
           </group>
         </RigidBody>
