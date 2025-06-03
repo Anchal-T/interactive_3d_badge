@@ -16,7 +16,7 @@ function App(){
             <pointLight position={[10, 10, 10]} intensity={4.5} />
             <Physics debug={debug} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
                 <Band cardRef={cardModelRef} />
-                <Model ref={cardModelRef} position={[0, 0.1, 0]}/> 
+                <Model ref={cardModelRef} position={[0, 0, 0]}/> 
             </Physics>
             <Environment background blur={0.75}>
                 <color attach="background" args={['#393E46']} />
