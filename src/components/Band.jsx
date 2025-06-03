@@ -159,6 +159,7 @@ export function Band({ maxSpeed = 50, minSpeed = 10 }) {
                 map={texture}
                 map-rotation={Math.PI / 2 + Math.PI / 2 + Math.PI / 2}
                 map-anisotropy={16}
+                map-repeat={[-1, 1]}
                 clearcoat={1}
                 clearcoatRoughness={0.15}
                 roughness={0.3}
