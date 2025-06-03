@@ -45,7 +45,7 @@ export const Model = ({ ref, cardType = 'water', ...props }) => {
         
         return {
             holographic: `${baseUrl}${cardBase}`,
-            pokemonCard: '/textures/pikachu.png', // Local Pokemon card texture
+            pokemonCard: '/textures/pikachuL.png', // Local Pokemon card texture
             grain: `${baseUrl}${cardTextureMappings.effects.grain}`,
             glitter: `${baseUrl}${cardTextureMappings.effects.glitter}`,
             cosmos: `${baseUrl}${cardTextureMappings.effects.cosmos}`
