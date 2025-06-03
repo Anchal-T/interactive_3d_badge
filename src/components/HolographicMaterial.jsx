@@ -39,7 +39,7 @@ const HolographicShaderMaterial = shaderMaterial(
     uniform vec3 cardGlow;
     varying vec2 vUv;    void main() {
       // Rotate UV coordinates for proper card orientation (90 degrees counter-clockwise)
-      vec2 cardUV = vec2(1.0 - vUv.y, vUv.x);
+      vec2 cardUV = vec2(vUv.y,  vUv.x);
       
       // Base card texture with rotated UVs
       vec4 color = texture2D(cardTexture, cardUV);
