@@ -118,10 +118,10 @@ export const Model = ({ ref, cardType = 'water', ...props }) => {
                     castShadow
                     receiveShadow
                     geometry={nodes.Plane.geometry}
-                    position={[-0.002, 0.674, -0.03]}
-                    rotation={[-0.158, 1.538, 1.684]}
-                    scale={0.357}
-                >                    <HolographicMaterial 
+        position={[-0.002, 0.674, -0.011]}
+        rotation={[-2.405, 1.566, -2.309]}
+        scale={0.357}                >                    
+                <HolographicMaterial 
                         cardTexture={textures.pokemonCard}
                         holoTexture={textures.holographic}
                         grainTexture={textures.grain}
@@ -137,19 +137,18 @@ export const Model = ({ ref, cardType = 'water', ...props }) => {
                     receiveShadow
                     geometry={nodes.clamp.geometry}
                     material={materials.metal}
-                    position={[0.001, 1.067, -0.038]}
-                    rotation={[-0.086, -0.113, 0.1]}
-                    scale={1.285}
+                            position={[0.001, 1.067, -0.004]}
+        rotation={[-0.003, -0.331, 0.006]}
+        scale={1.285}
                 />
                 <mesh
                     castShadow
                     receiveShadow
                     geometry={nodes.clip.geometry}
                     material={materials.metal}
-                    position={[-0.01, 1.203, -0.049]}
-                    rotation={[-0.206, 1.033, 0.211]}
-                    scale={0.991}
-                />
+        position={[0.001, 1.203, -0.011]}
+        rotation={[-0.018, -0.338, 0.003]}
+        scale={0.991}                />
             </group>
         </RigidBody>
     )
