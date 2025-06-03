@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { useFrame, extend } from '@react-three/fiber'
 import { shaderMaterial } from '@react-three/drei'
 
@@ -35,13 +35,12 @@ const HolographicShaderMaterial = shaderMaterial(
     uniform sampler2D holoTexture;
     uniform sampler2D grainTexture;
     uniform sampler2D noiseTexture;
-    uniform sampler2D normalTexture;
-    uniform vec3 cardGlow;
-    varying vec2 vUv;    void main() {
-      // Rotate UV coordinates for proper card orientation (90 degrees counter-clockwise)
-      vec2 cardUV = vec2(vUv.y,  vUv.x);
+    uniform sampler2D normalTexture;    uniform vec3 cardGlow;
+    varying vec2 vUv;      void main() {
+      // Use UV coordinates for correct card orientation and proper centering
+      vec2 cardUV = vUv;
       
-      // Base card texture with rotated UVs
+      // Base card texture
       vec4 color = texture2D(cardTexture, cardUV);
       
       // Dynamic holographic effect based on pointer position
@@ -67,15 +66,14 @@ const HolographicShaderMaterial = shaderMaterial(
       
       // Grain effect for texture
       vec3 grain = texture2D(grainTexture, vUv * 3.0).rgb;
+        // Start with the holographic background
+      vec3 finalColor = holo.rgb * cardGlow * 0.2; // More subtle background effect
       
-      // Start with the holographic background
-      vec3 finalColor = holo.rgb * cardGlow * 0.3; // Subtle background effect
-      
-      // Layer the card image on top with proper alpha blending
-      finalColor = mix(finalColor, color.rgb, color.a);
+      // Layer the card image on top with stronger presence
+      finalColor = mix(finalColor, color.rgb, 0.9); // Make card texture more prominent
       
       // Add very subtle glare highlights
-      finalColor += cardGlow * glare;
+      finalColor += cardGlow * glare * 0.1;
       
       // Apply subtle grain texture
       finalColor *= mix(vec3(1.0), grain, 0.05);
@@ -101,6 +99,25 @@ export function HolographicMaterial({
 }) {
   const materialRef = useRef()
   const [pointer, setPointer] = useState({ x: 0.5, y: 0.5 })
+  
+  // Create a default holographic texture if none provided
+  const defaultHoloTexture = useMemo(() => {
+    if (holoTexture) return holoTexture
+    // Create a simple gradient texture as fallback
+    const canvas = document.createElement('canvas')
+    canvas.width = 256
+    canvas.height = 256
+    const ctx = canvas.getContext('2d')
+    const gradient = ctx.createLinearGradient(0, 0, 256, 256)
+    gradient.addColorStop(0, '#ff00ff')
+    gradient.addColorStop(0.5, '#00ffff')
+    gradient.addColorStop(1, '#ffff00')
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, 256, 256)
+    const texture = new THREE.CanvasTexture(canvas)
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+    return texture
+  }, [holoTexture])
   
   // Map Pokemon card types to glow colors like in the original repo
   const typeColors = {
@@ -149,15 +166,14 @@ export function HolographicMaterial({
       materialRef.current.uniforms.cardGlow.value.set(selectedColor)
     }
   })
-  
-  return (
+    return (
     <holographicShaderMaterial 
       ref={materialRef}
       cardTexture={cardTexture}
-      holoTexture={holoTexture}
-      grainTexture={grainTexture || holoTexture}
-      noiseTexture={noiseTexture || grainTexture || holoTexture}
-      normalTexture={normalTexture || holoTexture}
+      holoTexture={defaultHoloTexture}
+      grainTexture={grainTexture || defaultHoloTexture}
+      noiseTexture={noiseTexture || grainTexture || defaultHoloTexture}
+      normalTexture={normalTexture || defaultHoloTexture}
       transparent
       cardGlow={new THREE.Color(selectedColor)}
     />
