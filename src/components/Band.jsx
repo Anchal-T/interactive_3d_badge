@@ -16,7 +16,6 @@ import {
   useSphericalJoint,
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
-import { useControls } from "leva";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 useGLTF.preload("/model/keyCard.glb");
@@ -170,14 +169,14 @@ export function Band({ maxSpeed = 50, minSpeed = 10 }) {
               geometry={nodes.clamp.geometry}
               material={materials.metal}
               position={[0.001, 1.067, -0.038]}
-              rotation={[-0.086, -0.113, 0.1]}
+            //   rotation={[-0.086, -0.113, 0.1]}
               scale={1.285}
             />
             <mesh
               geometry={nodes.clip.geometry}
               material={materials.metal}
               position={[-0.01, 1.203, -0.049]}
-              rotation={[-0.206, 1.033, 0.211]}
+            //   rotation={[-0.206, 1.033, 0.211]}
               scale={0.991}
             />
           </group>
