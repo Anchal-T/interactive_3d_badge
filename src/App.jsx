@@ -13,13 +13,13 @@ function App(){
     return(
         <Canvas camera={{position: [0, 0, 13], fov : 15}}>
             <ambientLight intensity={Math.PI} />
-            <pointLight position={[10, 10, 10]} intensity={1.5} />
+            <pointLight position={[10, 10, 10]} intensity={4.5} />
             <Physics debug={debug} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
                 <Band cardRef={cardModelRef} />
                 <Model ref={cardModelRef} position={[0, 0.1, 0]}/> 
             </Physics>
             <Environment background blur={0.75}>
-                <color attach="background" args={['black']} />
+                <color attach="background" args={['#353935']} />
                 <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
                 <Lightformer intensity={3} color="white" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
                 <Lightformer intensity={3} color="white" position={[1, 1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
