@@ -21,7 +21,7 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 useGLTF.preload("/model/keyCard.glb");
 useTexture.preload("/textures/pikachuL.png");
 
-export function Band({ maxSpeed = 50, minSpeed = 10 }) {
+export function Band({ maxSpeed = 50, minSpeed = 10, targetUrl = "https://github.com/Anchal-T" }) {
   const band = useRef(),
     fixed = useRef(),
     j1 = useRef(),
@@ -53,6 +53,9 @@ export function Band({ maxSpeed = 50, minSpeed = 10 }) {
   );
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
+  const [pullCount, setPullCount] = useState(0);
+  const pullTimerRef = useRef(null);
+  const wasDraggingRef = useRef(false);
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -107,6 +110,37 @@ export function Band({ maxSpeed = 50, minSpeed = 10 }) {
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
     }
   });
+
+  const resetPullCounter = () => {
+    if (pullTimerRef.current) clearTimeout(pullTimerRef.current);
+    pullTimerRef.current = setTimeout(() => {
+      setPullCount(0);
+    }, 2000); // Reset after 2 seconds of inactivity
+  };
+
+  // Check for navigation after pull count increases
+  useEffect(() => {
+    if (pullCount >= 3) {
+      window.location.href = targetUrl;
+    }
+  }, [pullCount, targetUrl]);
+
+  // Track pull action (drag and release)
+  useEffect(() => {
+    if (dragged) {
+      wasDraggingRef.current = true;
+    } else if (wasDraggingRef.current) {
+      wasDraggingRef.current = false;
+      setPullCount(prevCount => prevCount + 1);
+      resetPullCounter();
+    }
+  }, [dragged]);
+
+  useEffect(() => {
+    return () => {
+      if (pullTimerRef.current) clearTimeout(pullTimerRef.current);
+    };
+  }, []);
 
   curve.curveType = "chordal";
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
